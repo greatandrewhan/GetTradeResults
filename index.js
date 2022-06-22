@@ -32,6 +32,37 @@ const result = {
 }
 */
 
+// getTradeResults(tradeList) output:
+/*
+const tradeResult = {
+  TAP: [ 0, 2 ],
+  DIA: [ 0 ],
+  PCPC: [ 0, 1, 2 ],
+  RCG: [ 1 ],
+  RVLV: [ 1, 2 ],
+  BCPC: [ 2 ]
+}
+*/
+
+// #2 Search Trades
+// To complete the functionality to search for trades by tickers, write a function named searchTrades() that accepts:
+/* 
+  and if const tickers = ["TAP", "BCPC"] then the result of searchTrades(tickers, result, data) would be:
+  [
+    ["TAP", "DIA", "PCPC"],
+    ["TAP", "BCPC", "RVLV", "PCPC"],
+  ]
+  */
+
+/*
+ searchTrades(tickers, result, data) output:
+ no duplicate tickers in tickers
+ [
+    ["TAP", "DIA", "PCPC"],
+    ["TAP", "BCPC", "RVLV", "PCPC"],
+  ]
+*/
+
 const tradeList = [
   ["TAP", "DIA", "PCPC"], //--0 trading session
   ["RCG", "PCPC", "RVLV"], //--1 trading session
@@ -40,6 +71,24 @@ const tradeList = [
 ];
 
 function getTradeResult(tradeList) {
+  let tradeResult = [];
+  for (let i = 0; i < tradeList.length; i++) {
+    let trade = tradeList[i];
+    for (let j = 0; j < trade.length; j++) {
+      let ticker = trade[j];
+      if (!tradeResult[ticker]) {
+        tradeResult[ticker] = [];
+      }
+      tradeResult[ticker].push(i);
+    }
+  }
+  return tradeResult;
+}
+
+const tradeResult = getTradeResult(tradeList);
+console.log(tradeResult);
+
+function getTradeResult2(tradeList) {
   let tradeResult = [];
   for (let i = 0; i < tradeList.length; i++) {
     if (tradeList[i].length > 1) {
@@ -52,19 +101,6 @@ function getTradeResult(tradeList) {
   }
   return tradeResult;
 }
-
-const tradeResult = getTradeResult(tradeList);
-console.log(tradeResult);
-
-// #2 Search Trades
-// To complete the functionality to search for trades by tickers, write a function named searchTrades() that accepts:
-/* 
-  and if const tickers = ["TAP", "BCPC"] then the result of searchTrades(tickers, result, data) would be:
-  [
-    ["TAP", "DIA", "PCPC"],
-    ["TAP", "BCPC", "RVLV", "PCPC"],
-  ]
-  */
 
 function searchTrades(tickers, result, data) {
   let resultArray = [];
@@ -79,6 +115,6 @@ function searchTrades(tickers, result, data) {
 }
 
 const tickers = ["TAP", "DBPC"];
-const tradeResults = getTradeResult(tradeList);
+const tradeResults = getTradeResult2(tradeList);
 const searchResults = searchTrades(tickers, tradeResults, tradeList);
 console.log(searchResults);
