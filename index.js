@@ -71,43 +71,37 @@ const tradeList = [
 ];
 
 function getTradeResult(tradeList) {
-  let tradeResult = [];
+  let result = [];
   for (let i = 0; i < tradeList.length; i++) {
     let trade = tradeList[i];
     for (let j = 0; j < trade.length; j++) {
       let ticker = trade[j];
-      if (!tradeResult[ticker]) {
-        tradeResult[ticker] = [];
+      if (!result[ticker]) {
+        result[ticker] = [];
       }
-      tradeResult[ticker].push(i);
+      result[ticker].push(i);
     }
   }
-  return tradeResult;
+  return result;
 }
 
-const tradeResult = getTradeResult(tradeList);
-console.log(tradeResult);
-
-function getTradeResult2(tradeList) {
-  let tradeResult = [];
-  for (let i = 0; i < tradeList.length; i++) {
-    if (tradeList[i].length > 1) {
-      let trade = [];
-      for (let j = 0; j < tradeList[i].length; j++) {
-        trade.push(tradeList[i][j]);
-      }
-      tradeResult.push(trade);
-    }
-  }
-  return tradeResult;
-}
+const result = getTradeResult(tradeList);
+console.log(result);
 
 function searchTrades(tickers, result, data) {
   let resultArray = [];
-  for (let i = 0; i < result.length; i++) {
-    for (let j = 0; j < result[i].length; j++) {
-      if (tickers.includes(result[i][j])) {
-        resultArray.push(data[i]);
+  for (let i = 0; i < tickers.length; i++) {
+    let ticker = tickers[i];
+    if (result[ticker]) {
+      for (let j = 0; j < result[ticker].length; j++) {
+        let trade = data[result[ticker][j]];
+        if (trade.length > 1) {
+          let tradeArray = [];
+          for (let k = 0; k < trade.length; k++) {
+            tradeArray.push(trade[k]);
+          }
+          resultArray.push(tradeArray);
+        }
       }
     }
   }
@@ -115,6 +109,5 @@ function searchTrades(tickers, result, data) {
 }
 
 const tickers = ["TAP", "DBPC"];
-const tradeResults = getTradeResult2(tradeList);
-const searchResults = searchTrades(tickers, tradeResults, tradeList);
-console.log(searchResults);
+const resultArray = searchTrades(tickers, result, tradeList);
+console.log(resultArray);
